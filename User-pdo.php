@@ -68,13 +68,15 @@ class Userpdo {
 
         if($this->check == 1) {
 
-            $request_check_login= "SELECT * FROM utilisateurs";
+            $request_check_login= "SELECT login FROM utilisateurs";
+
             $query_check_login = $this->bdd->prepare($request_check_login);
             $query_check_login->execute();
+
             $result_check_login = $query_check_login->fetchAll();
 
             for($x = 0; isset($result_check_login[$x]); $x++ ) {
-                    if($result_check_login[$x][1] == $_POST['login']) {
+                    if($result_check_login[$x][0] == $_POST['login']) {
 
                         $this->check = 0 ;
                         $this->message = 'Ce pseudo existe déjà';
@@ -100,15 +102,17 @@ class Userpdo {
         if(isset($_SESSION['user']) && !isset($_SESSION['userID'])) {
 
         $request_ID_user = "SELECT id FROM utilisateurs WHERE login = '$_SESSION[user]'";
+
         $query_ID_user = $this->bdd->prepare($request_ID_user);
         $query_ID_user->execute();
+
         $result_ID_user = $query_ID_user->fetchAll();
 
         $_SESSION['userID'] = $result_ID_user[0][0];
         }  
     }
 
-    
+
 
     
     public function connect() {
@@ -118,8 +122,10 @@ class Userpdo {
         $this->login = $_POST['login'];
       
         $request_login= "SELECT * FROM utilisateurs";
+
         $query_login = $this->bdd->prepare($request_login);
         $query_login->execute();
+
         $result_login = $query_login->fetchAll();
     
         for($x = 0; isset($result_login[$x]); $x++){
@@ -165,8 +171,10 @@ class Userpdo {
     public function get_user_info() {
 
         $request_fetch_user_info= "SELECT * FROM utilisateurs where id = '$_SESSION[userID]'";
+
         $query_fetch_user_info = $this->bdd->prepare($request_fetch_user_info);
         $query_fetch_user_info->execute();
+        
         $result_fetch_user_info = $query_fetch_user_info->fetchAll();
 
         $this->id = $result_fetch_user_info[0][0];
@@ -205,12 +213,15 @@ class Userpdo {
 
             if($this->check == 1) {   
 
-                $request_user_info= "SELECT * FROM `utilisateurs`";
+                $request_user_info= "SELECT id, login FROM `utilisateurs`";
+
                 $query_user_info = $this->bdd->prepare($request_user_info);
                 $query_user_info->execute();
+
                 $result_user_info = $query_user_info->fetchAll();
 
                 for($x = 0; isset($result_user_info[$x]); $x++ ) {
+
                         if($result_user_info[$x][1] == $_POST['login'] && $result_user_info[$x][0] !== $_SESSION['userID']) {
                             $this->check = 0;
                             $this->message = 'Ce pseudo existe déjà';
@@ -226,6 +237,7 @@ class Userpdo {
         $update_user_profile = "UPDATE utilisateurs 
         SET login = :login, email = :email, firstname = :firstname, lastname = :lastname, password = :password 
         WHERE id = :id";
+        
         $query_update_user_profile = $this->bdd->prepare($update_user_profile);
         $query_update_user_profile->execute(array(':login' => $_POST['login'], ':email' => $_POST['email'], ':firstname' => $_POST['firstname'], 
         ':lastname' => $_POST['lastname'], ':password' => $modified_mdp_hashed, ':id' => $_SESSION['userID']));
@@ -249,21 +261,27 @@ class Userpdo {
         header('Location: index.php');
     }
 
+
+
     public function isConnected() {
 
     }
+
 
     public function getLogin() {
         return $this->login;
     }
 
+
     public function getEmail() {
         return $this->email;
     }
 
+
     public function getFirstName() {
         return $this->firstname;
     }
+    
 
     public function getLastName() {
         return $this->lastname;

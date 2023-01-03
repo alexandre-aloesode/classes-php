@@ -18,16 +18,20 @@
     
     <mainindex>
       
-            <h1>
-                Projet classes PHP
-            </h1>
+            <h1> Projet classes PHP </h1>
 
             <a href="connexion.php">
+
                 <h3>Cliquez ici pour vous connecter.</h3>
+
             </a>
-                <h3>ou</h3>
+
+            <h3>ou</h3>
+
             <a href="inscription.php">
+
                 <h3>ici pour créer votre compte</h3>
+                
             </a>
 
     </mainindex>

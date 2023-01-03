@@ -1,9 +1,6 @@
 <?php 
 
-    if(session_id() == '') {
-
-        session_start();
-    }
+    session_id() == '' ? session_start() : null;
 
     if(isset($_GET['deco']) && $_GET['deco'] == 'deco'){
         
@@ -31,9 +28,13 @@
                 <li><a href="admin.php">Admin</a></li>
 
                 <li>
+
                     <form method="get" id="deco_form">
+
                         <button type="submit" name="deco" value="deco">Déconnexion</button>
+
                     </form>
+
                 <li>
 
             <?php elseif(isset($_SESSION['user'])): ?>
@@ -41,9 +42,13 @@
                 <li><a href="profil.php">Profil</a></li>
 
                 <li>
+
                     <form method="get" id="deco_form">
+
                         <button type="submit" name="deco" value="deco">Déconnexion</button>
+
                     </form>
+                    
                 </li>
                         
             <?php else: ?>

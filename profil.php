@@ -2,13 +2,11 @@
 
     include 'User-pdo.php';
 
-    if(session_id() == '') {
-
-        session_start();
-    }
+    session_id() == '' ? session_start() : null;
 
 //Je crée ma classe User et grâce à la $_SESSION['userID'] ma requête sql du dessous me permet de récupérer les infos de l'utilisateur connecté.
     $user = new Userpdo();
+
     $user->get_user_info();
     
     if(isset($_POST['profile_change'])) {
@@ -18,10 +16,7 @@
 //Pour prendre en compte les informations modifiées, s'il y en a, je suis obligé de récupérer une 2ème fois les infos après que la modif ait été prise en compte.
     }
 
-    if(isset($_POST['confirm_delete'])) {
-
-        $user->delete();
-    }
+    isset($_POST['confirm_delete']) ? $user->delete() : null;
 
 ?>
 
@@ -61,49 +56,50 @@
 
             <h2>MODIFICATION DE PROFIL</h2>
 
-            <h3>
-            <?php 
-                    if(isset($_POST['profile_change'])) {
+            <h3> <?= isset($_POST['profile_change']) ? $user->message : null ?> </h3>
 
-                        echo $user->message;
-                    }
-                ?>
-            </h3>
+            <?php
 
-                <label for="login">Pseudo* : </label>
-                <input type="text" name="login" value="<?= $user->login ?>" >
-                <br>   
-                
-                <label for="email">Email* :</label>
-                <input type="text" name="email" value="<?= $user->email ?>">
-                <br>
+            require 'Form.php';
 
-                <label for="firstname">Prénom:</label>
-                <input type="text" name="firstname" value="<?= $user->firstname ?>">
-                <br>
+            $form = new Form($_POST);
 
-                <label for="lastname">Nom:</label>
-                <input type="text" name="lastname" value="<?= $user->lastname ?>">
-                <br>
+//A la consultation de son profil je veux afficher les infos existantes de l'utilsateur, mais s'il a effectué des modifs et la validation a échoué 
+//je veux que ses modifs soient conservées, sauf pour les MDP.
+            echo $form->label('login', 'Pseudo* :');
+            echo isset($_POST['profile_change']) ? $form->inputPOST('text', 'login') : $form->inputWithValue('text', 'login', $user->login);
 
-                <label for="new_mdp">Nouveau mot de passe* : </label>
-                <input type="password" name="new_mdp">
-                <br>
 
-                <label for="new_mdp_confirm">Confirmez votre nouveau mot de passe*</label>
-                <input type="password" name="new_mdp_confirm">
-                <br>
+            echo $form->label('email', 'Email* :');
+            echo isset($_POST['profile_change']) ? $form->inputPOST('text', 'email') : $form->inputWithValue('text', 'email', $user->email); 
 
-                <label for="mdp">Tapez votre ancien mot de passe pour confirmer les changements*</label>
-                <input type="password" name="mdp">
-                <br>
-
-                <button type="submit" name="profile_change">Modifier</button>
             
-            </form>
+            echo $form->label('firstname', 'Prénom :');
+            echo isset($_POST['profile_change']) ? $form->inputPOST('text', 'firstname') : $form->inputWithValue('text', 'firstname', $user->firstname);
 
-            <form method="post" class="formulaire">
-                    <button type="submit" id="delete_profile" name="delete_profile">Supprimer mon compte</button>
+
+            echo $form->label('lastname', 'Nom :');
+            echo isset($_POST['profile_change']) ? $form->inputPOST('text', 'lastname') : $form->inputNoValue('text', 'lastname', $user->lastname);
+
+
+            echo $form->label('new_mdp', 'Nouveau MDP* :');
+            echo isset($_POST['profile_change']) ? $form->inputPOST('password', 'new_mdp') : $form->inputNoValue('text', 'new_mdp');
+
+
+            echo $form->label('new_mdp_confirm', 'Confirmez votre nouveau MDP* :');
+            echo $form->inputNoValue('password', 'new_mdp_confirm');
+
+
+            echo $form->label('mdp', 'Tapez votre ancien MDP pour confirmer les changements');
+            echo $form->inputNoValue('password', 'mdp');
+
+
+            echo $form->button('profile_change', 'Modifier');
+            
+
+            echo $form->buttonWithID('delete_profile', 'delete_profile', 'Supprimer mon compte')
+            
+            ?>
         
 
         <?php elseif(!isset($_SESSION['userID'])) : ?>
@@ -120,3 +116,4 @@
 
 </body>
 </html>
+

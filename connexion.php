@@ -2,19 +2,14 @@
 
     require 'User-pdo.php';
 
-    if(session_id() == ''){
-        session_start();
-    }
+    require 'Form.php';
 
-    if(!isset($_SESSION['user'])) {
+    
+    session_id() == '' ? session_start() : null;
 
-        $user = new Userpdo();
-    }
+    !isset($_SESSION['user']) ? $user = new Userpdo() : null;
 
-    if(isset($_POST['connexion'])) {
-
-        $user->connect();
-    }  
+    isset($_POST['connexion']) ? $user->connect() : null;
 
 ?>
 
@@ -41,33 +36,29 @@
 
             <form method="post" class="formulaire">
 
-                <?php if($user->check !== 2): ?>
+                <h2><?= $user->check !== 2 ? 'CONNEXION' : null ?></h2>
 
-                    <h2>CONNEXION</h2>
-                
-                <?php endif ?>
-
-                <h3>
-
-                    <?php if(isset($_POST['connexion'])) echo $user->message ?>
-                    
-                </h3>
+                <h3> <?= isset($_POST['connexion']) ? $user->message : null ?> </h3>
 
                 <?php if(isset($_POST['connexion']) && $user->check == 2): ?>
 
                     <h2>Bonjour et bienvenue <?= $_POST['login'] ?> !</h2>
                 
                 <?php else: ?>
+
+                    <?php
                                
-                    <label for="login">Pseudo :</label>
-                    <input type="text" name="login" class="form_input">
-                    <br>
+                    $form = new Form($_POST);
 
-                    <label for="password">Mot de passe :</label>
-                    <input type="password" name="mdp" class="form_input">
-                    <br>
+                    echo $form->label('login', 'Pseudo :');
+                    echo $form->inputPOST('text', 'login');
 
-                    <button type="submit" name="connexion">Se connecter</button>
+                    echo $form->label('mdp', 'Mot de passe :');
+                    echo $form->inputPOST('password', 'mdp');
+
+                    echo $form->button('connexion', 'Se connecter');
+
+                    ?>
                 
                 <?php endif ?>
 

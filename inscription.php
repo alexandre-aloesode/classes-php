@@ -4,16 +4,13 @@
 
     if(isset($_POST['inscription'])) {
 
-        if(session_id() == '') {
-            session_start();          
-        }
+        session_id() == '' ? session_start() : null;
 
         $user = new Userpdo();
         $user->register();
     }
     
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -39,55 +36,46 @@
 
         <form method="post" class ="formulaire">
 
-            <h2>
-                <?php
+            <h2> <?= isset($_POST['inscription']) && isset($_SESSION['user']) ? 'Félicitations !' : 'Inscription' ?> </h2>
 
-                    if(isset($_POST['inscription']) && isset($_SESSION['user'])) {
-                        echo 'Félicitations!';
-                    }
-
-                    else {
-                        echo 'INSCRIPTION';
-                    }
-
-                ?> 
-            </h2>
-
-            <h3>
-                <?php if(isset($_POST['inscription'])) echo $user->message ?>
-            </h3>
+            <h3> <?= (isset($_POST['inscription'])) ? $user->message : null ?> </h3>
 
             <?php if(!isset($_POST['inscription']) || $user->check !== 1): ?>
 
-                <label for="login">Pseudo* :</label>
-                <input type="text" name="login">
-                <br>
+                <?php 
 
-                <label for="email">Email* :</label>
-                <input type="text" name="email">
-                <br>
+                    require 'Form.php';
 
-                <label for="firstname">Prénom:</label>
-                <input type="text" name="firstname">
-                <br>
+                    $form = new Form($_POST);
 
-                <label for="lastname">Nom:</label>
-                <input type="text" name="lastname">
-                <br>
+                    echo $form->label('login', 'Pseudo* :');
+                    echo $form->inputPOST('text', 'login');
 
-                <label for="password">Mot de passe* :</label>
-                <input type="password" name="mdp">
-                <br>
+                    echo $form->label('email', 'Email* :');
+                    echo $form->inputPOST('text', 'email');
+
+                    echo $form->label('firstname', 'Prénom :');
+                    echo $form->inputPOST('text', 'firstname');
+
+                    echo $form->label('lastname', 'Nom :');
+                    echo $form->inputPOST('text', 'lastname');
+
+                    echo $form->label('mdp', 'Mot de passe* :');
+                    echo $form->inputPOST('password', 'mdp');
+
+                    echo $form->label('mdp_confirm', 'Confirmation mot de passe* :');
+                    echo $form->inputPOST('password', 'mdp_confirm');
+
+                    echo $form->button('inscription', 'S\'inscrire')
+
+                ?>
                 
-                <label for="password">Confirmation mot de passe* :</label>
-                <input type="password" name="mdp_confirm">
-                <br>
-
-                <button type="submit" name="inscription">S'inscrire</button>
+            <?php endif; ?>
 
         </form>
             
-            <?php endif; ?>
+            
+            
     </main>
 
     <?php include 'footer.php' ?>
