@@ -216,21 +216,30 @@ class User {
 
     public function isConnected() {
 
+        isset($_SESSION['userID']) ? true : false;
     }
 
     public function getLogin() {
+
+        $this->get_user_info();
         return $this->login;
     }
 
     public function getEmail() {
+
+        $this->get_user_info();
         return $this->email;
     }
 
     public function getFirstName() {
+
+        $this->get_user_info();
         return $this->firstname;
     }
 
     public function getLastName() {
+
+        $this->get_user_info();
         return $this->lastname;
     }
 

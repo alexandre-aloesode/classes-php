@@ -135,7 +135,9 @@ class Userpdo {
                 $this->check ++;
     
                     if(password_verify($_POST['mdp'], $result_login[$x][2])) {
+
                         $this->check ++;
+
                         $_SESSION['userID'] = $result_login[$x][0];
                         $_SESSION['user'] = $this->login;
                     }
@@ -143,14 +145,17 @@ class Userpdo {
         }
     
         if($this->check == 0){
+
             $this->message = "Ce nom d'utilisateur n'existe pas.";
         } 
             
         elseif($this->check == 1){
+
             $this->message = "Le nom d'utilisateur et le mot de passe ne correspondent pas.";
         } 
             
         elseif($this->check == 2){
+
             $this->message = "Connexion réussie.";
             $_SESSION['user'] = $_POST['login'];
         }
@@ -193,11 +198,13 @@ class Userpdo {
     $this->check = 1 ;
 
         if(empty($_POST['login']) || empty($_POST['mdp']) || empty($_POST['email']) || trim($_POST['login']) == '' || trim($_POST['mdp']) == '' || trim($_POST['email']) == '') {
+
             $this->check = 0;
             $this->message = 'Certains champs indispensables sont vides';
         }
 
         if($_POST['new_mdp'] !== $_POST['new_mdp_confirm']) {
+
             $this->check = 0;
             $this->message = 'Les nouveaux mots de passe ne correspondent pas';
         }
@@ -207,6 +214,7 @@ class Userpdo {
             $this->get_user_info();
 
             if(!password_verify($_POST['mdp'], $this->password)) {
+
                 $this->check = 0;
                 $this->message = 'Ancien mot de passe incorrect';
             }
@@ -223,6 +231,7 @@ class Userpdo {
                 for($x = 0; isset($result_user_info[$x]); $x++ ) {
 
                         if($result_user_info[$x][1] == $_POST['login'] && $result_user_info[$x][0] !== $_SESSION['userID']) {
+
                             $this->check = 0;
                             $this->message = 'Ce pseudo existe déjà';
                         }
@@ -237,8 +246,9 @@ class Userpdo {
         $update_user_profile = "UPDATE utilisateurs 
         SET login = :login, email = :email, firstname = :firstname, lastname = :lastname, password = :password 
         WHERE id = :id";
-        
+
         $query_update_user_profile = $this->bdd->prepare($update_user_profile);
+        
         $query_update_user_profile->execute(array(':login' => $_POST['login'], ':email' => $_POST['email'], ':firstname' => $_POST['firstname'], 
         ':lastname' => $_POST['lastname'], ':password' => $modified_mdp_hashed, ':id' => $_SESSION['userID']));
 
@@ -265,25 +275,34 @@ class Userpdo {
 
     public function isConnected() {
 
+        isset($_SESSION['userID']) ? true : false;
     }
 
 
     public function getLogin() {
+
+        $this->get_user_info();
         return $this->login;
     }
 
 
     public function getEmail() {
+
+        $this->get_user_info();
         return $this->email;
     }
 
 
     public function getFirstName() {
+
+        $this->get_user_info();
         return $this->firstname;
     }
     
 
     public function getLastName() {
+
+        $this->get_user_info();
         return $this->lastname;
     }
 

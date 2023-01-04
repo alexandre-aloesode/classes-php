@@ -52,7 +52,7 @@
                     echo $form->inputPOST('text', 'login');
 
                     echo $form->label('email', 'Email* :');
-                    echo $form->inputPOST('text', 'email');
+                    echo $form->inputPOST('email', 'email');
 
                     echo $form->label('firstname', 'Prénom :');
                     echo $form->inputPOST('text', 'firstname');

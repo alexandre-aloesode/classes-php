@@ -25,7 +25,9 @@
         <ul>
             <?php if(isset($_SESSION['user']) && $_SESSION['user'] == 'admin'): ?>
               
-                <li><a href="admin.php">Admin</a></li>
+                <!-- <li><a href="admin.php">Admin</a></li> -->
+
+                <li><a href="profil.php">Profil</a></li>
 
                 <li>
 

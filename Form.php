@@ -47,6 +47,16 @@ class Form {
 
     }
 
+    public function passwordWithEye($name) {
+
+        return
+
+            '<input type="password" name="' . $name . '" class="password_with_eye">
+            <i class="fa-regular fa-eye"></i>
+            <br>'; 
+
+    }
+
     
     public function button($name, $desc) {
 

@@ -4,19 +4,23 @@
 
     session_id() == '' ? session_start() : null;
 
+    if(isset($_SESSION['userID'])) {
+
+
 //Je crée ma classe User et grâce à la $_SESSION['userID'] ma requête sql du dessous me permet de récupérer les infos de l'utilisateur connecté.
-    $user = new Userpdo();
+        $user = new Userpdo();
 
-    $user->get_user_info();
-    
-    if(isset($_POST['profile_change'])) {
-
-        $user->update_profile();
         $user->get_user_info();
-//Pour prendre en compte les informations modifiées, s'il y en a, je suis obligé de récupérer une 2ème fois les infos après que la modif ait été prise en compte.
-    }
+        
+        if(isset($_POST['profile_change'])) {
 
-    isset($_POST['confirm_delete']) ? $user->delete() : null;
+            $user->update_profile();
+            $user->get_user_info();
+    //Pour prendre en compte les informations modifiées, s'il y en a, je suis obligé de récupérer une 2ème fois les infos après que la modif ait été prise en compte.
+        }
+
+        isset($_POST['confirm_delete']) ? $user->delete() : null;
+    }
 
 ?>
 
@@ -71,7 +75,7 @@
 
 
             echo $form->label('email', 'Email* :');
-            echo isset($_POST['profile_change']) ? $form->inputPOST('text', 'email') : $form->inputWithValue('text', 'email', $user->email); 
+            echo isset($_POST['profile_change']) ? $form->inputPOST('email', 'email') : $form->inputWithValue('email', 'email', $user->email); 
 
             
             echo $form->label('firstname', 'Prénom :');
@@ -102,7 +106,7 @@
             ?>
         
 
-        <?php elseif(!isset($_SESSION['userID'])) : ?>
+        <?php elseif(!isset($_SESSION['userID'])): ?>
 
             <h3> Pas de compte, pas de profil ! </h3>
 

@@ -11,6 +11,7 @@
     font-size: 120%;
     font-family: 'Roboto', sans-serif;
     box-shadow: 5px 5px 5px 5px white;
+    position: relative;
 }
 
 .formulaire h2 {
@@ -79,3 +80,17 @@
         margin-top: 40px;
         background-color: red;
     }
+
+
+      .password_with_eye
+      /* .password-container input[type="text"]{ */
+        {
+            position: relative !important;
+      }
+
+    .fa-eye {
+        position: absolute;
+        top: 70%;
+        right: 15%;
+        cursor: pointer;
+      }

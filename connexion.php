@@ -54,7 +54,7 @@
                     echo $form->inputPOST('text', 'login');
 
                     echo $form->label('mdp', 'Mot de passe :');
-                    echo $form->inputPOST('password', 'mdp');
+                    echo $form->passwordWithEye('mdp');
 
                     echo $form->button('connexion', 'Se connecter');
 
@@ -70,3 +70,13 @@
     
 </body>
 </html>
+<script>
+        const passwordInput = document.querySelector(".password_with_eye")
+        const eye = document.querySelector(".fa-eye")
+
+        eye.addEventListener("click", function(){
+            this.classList.toggle("fa-eye-slash")
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password"
+            passwordInput.setAttribute("type", type)
+        })
+</script>
